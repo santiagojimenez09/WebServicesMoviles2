@@ -1,5 +1,6 @@
 package com.example.webservices_usuarios;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -40,6 +43,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
         jetcorreo = vista.findViewById(R.id.etcorreo);
         jetclave = vista.findViewById(R.id.etclave);
         jbtingresar = vista.findViewById(R.id.btingresar);
+        rq = Volley.newRequestQueue(getContext());//conexion a internet
         jbtingresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,7 +51,7 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
             }
         });
 
-        rq = Volley.newRequestQueue(getContext());//conexion a internet
+
 
         return vista;
 
@@ -71,7 +75,25 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
     @Override
     public void onResponse(JSONObject response) {
 
+        ClsUsuario usuario = new ClsUsuario();
         Toast.makeText(getContext(),"Se ha encontrado el correo "+jetcorreo.getText().toString(),Toast.LENGTH_SHORT).show();
+        JSONArray jsonArray = response.optJSONArray("datos");
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = jsonArray.getJSONObject(0);//posicion 0 del arreglo....
+            usuario.setUsr(jsonObject.optString("usr"));
+            usuario.setNombre(jsonObject.optString("nombre"));
+            usuario.setCorreo(jsonObject.optString("correo"));
+            usuario.setClave(jsonObject.optString("clave"));
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+        Intent IntDatos = new Intent(getContext(),UsuarioActivity.class);
+        IntDatos.putExtra(UsuarioActivity.nombre,usuario.getNombre());
+        startActivity(IntDatos);
 
     }
 }

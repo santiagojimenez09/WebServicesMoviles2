@@ -15,5 +15,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().replace(R.id.escenario,new SesionFragment()).commit();
+
+
     }
+
+
+
 }
