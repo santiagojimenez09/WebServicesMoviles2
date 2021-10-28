@@ -53,6 +53,9 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
 
 
 
+
+
+
         return vista;
 
 
@@ -92,7 +95,6 @@ public class SesionFragment extends Fragment implements Response.Listener<JSONOb
         }
 
         Intent IntDatos = new Intent(getContext(),UsuarioActivity.class);
-        IntDatos.putExtra(UsuarioActivity.nombre,usuario.getNombre());
         startActivity(IntDatos);
 
     }
